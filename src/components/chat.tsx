@@ -67,7 +67,7 @@ export default function Chat() {
     const formattedCategory: Category = category?.split(':')[1]?.trim() as Category
     const formattedTitle: string = title?.split(':')[1]?.trim()
     const formattedDescription = description?.split(':')[1]?.trim()
-    const icon = icons[formattedCategory.toLowerCase() as Category]
+    const icon = formattedCategory && icons[formattedCategory?.toLowerCase() as Category]
 
     return (
         <div className='w-full max-w-lg text-center'>
