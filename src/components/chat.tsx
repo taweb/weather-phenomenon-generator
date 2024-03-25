@@ -42,13 +42,20 @@ export default function Chat() {
             const chunk = await reader?.read()
             const {done, value} = chunk
             
-            const decodedChunk = decoder.decode(value)
+            const decodedChunk = decoder.decode(value)            
             
             const lines = decodedChunk.split("\n")
-            const parsedLines = lines.map((line) => 
+            const formattedLines = lines.map((line) => 
                 line.replace(/^data: /, "").trim()
             ).filter(line => line !== "" && line !== "[DONE]")
-            .map(line => JSON.parse(line))
+
+            const parsedLines = formattedLines.map(line => {
+                try {
+                    return JSON.parse(line)
+                } catch {
+                    return null
+                }
+            })
 
             for (const parsedLine of parsedLines) {
                 const content = parsedLine.choices[0].delta.content
@@ -66,7 +73,7 @@ export default function Chat() {
     const [category, title, description] = message.split('\n')
     const formattedCategory: Category = category?.split(':')[1]?.trim() as Category
     const formattedTitle: string = title?.split(':')[1]?.trim()
-    const formattedDescription = description?.split(':')[1]?.trim()
+    const formattedDescription: string = description?.split(':')[1]?.trim()
     const icon = formattedCategory && icons[formattedCategory?.toLowerCase() as Category]
 
     return (
