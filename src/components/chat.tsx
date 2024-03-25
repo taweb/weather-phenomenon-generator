@@ -58,7 +58,7 @@ export default function Chat() {
             })
 
             for (const parsedLine of parsedLines) {
-                const content = parsedLine.choices[0].delta.content
+                const content = parsedLine?.choices[0].delta.content
                 if (content) {
                     setMessage(message => message + content)
                 }
